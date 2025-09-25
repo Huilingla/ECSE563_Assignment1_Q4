@@ -1,7 +1,7 @@
-function [Eeq, Zeq] = genthevenin(Y, Iint, id)
+function [Eeq, Zeq, Yeq] = genthevenin(Y, Iint, id)
 % GENTHEVENIN Calculate generalized Thévenin equivalent for multiple nodes.
 %
-%   [EEQ, ZEQ] = GENTHEVENIN(Y, IINT, ID) computes the generalized
+%   [EEQ, ZEQ, YEQ] = GENTHEVENIN(Y, IINT, ID) computes the generalized
 %   Thévenin equivalent for a subset of nodes using Norton equivalence.
 %
 %   Inputs:
@@ -12,6 +12,7 @@ function [Eeq, Zeq] = genthevenin(Y, Iint, id)
 %   Outputs:
 %     Eeq  - Vector of generalized Thévenin equivalent voltages
 %     Zeq  - Generalized Thévenin equivalent impedance matrix
+%     Yeq  - Reduced admittance matrix (optional)
 %
 %   Method:
 %     1. Use network reduction to find equivalent as seen from nodes 'id'
