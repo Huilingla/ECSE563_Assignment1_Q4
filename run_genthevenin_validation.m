@@ -18,7 +18,7 @@ fprintf('PART (A): NODES 3 AND 5\n');
 fprintf('=======================\n\n');
 
 id_a = [3, 5];
-[Eeq_a, Zeq_a] = genthevenin(Y, Iint, id_a);
+[Eeq_a, Zeq_a, Yeq_a] = genthevenin(Y, Iint, id_a);
 
 % Display results in a clear format
 fprintf('\nSUMMARY - Nodes 3 and 5:\n');
@@ -42,12 +42,25 @@ for i = 1:size(Zeq_a,1)
 end
 fprintf('] p.u.\n');
 
+% Validation for part (a)
+fprintf('\nValidation for Nodes 3 and 5:\n');
+I_matrix_a = eye(size(Zeq_a,1));
+Yeq_Zeq_a = Yeq_a * Zeq_a;
+max_error_a = max(max(abs(Yeq_Zeq_a - I_matrix_a)));
+fprintf('Maximum error in Yeq * Zeq = I: %.2e\n', max_error_a);
+
+if max_error_a < 1e-10
+    fprintf('Matrix inversion validation: Excellent\n');
+else
+    fprintf('Matrix inversion validation: Acceptable\n');
+end
+
 %% Part (b): Nodes 9 and 4  
 fprintf('\n\nPART (B): NODES 9 AND 4\n');
 fprintf('=======================\n\n');
 
 id_b = [9, 4];
-[Eeq_b, Zeq_b] = genthevenin(Y, Iint, id_b);
+[Eeq_b, Zeq_b, Yeq_b] = genthevenin(Y, Iint, id_b);
 
 % Display results
 fprintf('\nSUMMARY - Nodes 9 and 4:\n');
@@ -112,7 +125,7 @@ end
 % Additional validation: Check Yeq * Zeq ≈ I
 fprintf('\nMatrix Validation: Yeq * Zeq should ≈ Identity\n');
 I_matrix = eye(size(Zeq_b,1));
-Yeq_Zeq = Yeq * Zeq_b;
+Yeq_Zeq = Yeq_b * Zeq_b;
 max_error = max(max(abs(Yeq_Zeq - I_matrix)));
 fprintf('Maximum error in Yeq * Zeq = I: %.2e\n', max_error);
 
@@ -123,3 +136,7 @@ else
 end
 
 fprintf('\n=== GENERALIZED THÉVENIN ANALYSIS COMPLETE ===\n');
+
+% Save results for further analysis
+fprintf('\nSaving results to genthevenin_results.mat\n');
+save('genthevenin_results.mat', 'Eeq_a', 'Zeq_a', 'Yeq_a', 'Eeq_b', 'Zeq_b', 'Yeq_b', 'id_a', 'id_b');
